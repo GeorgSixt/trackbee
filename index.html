@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TRACKBEE</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+  <style>
+  body{
+  font-family:Verdana;
+  }
+  .ui-slider-handle {
+    width: 3.6em!important;
+    height: 3.6em!important;
+    top: 50%;
+    margin-top: -1.8em!important;
+    text-align: center;
+    line-height: 1.1em;
+	border-radius:50%!important;
+	
+	
+  }
+  .cont{
+	padding:1em;
+  }
+  #console{
+	border:1px solid #cdcdcd;
+	max-height:300px;
+	overflow:auto;
+  }
+  </style>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
+  <script>
+  $( function() {
+	var _access_token = "9a1109fa8db44c28951f17ba06d2a4d02f1bc6e3";
+	var particleid = "370022000e51353432393339";
+    var handle = $( "#custom-handle" );
+	
+    $( "#slider" ).slider({
+      create: function() {
+        handle.text( $( this ).slider( "value" ) );
+      },
+      slide: function( event, ui ) {
+        handle.text( ui.value );
+      },
+	  stop: function( event, ui ) {
+		console.log(ui.value);
+		$.ajax({
+			method:'POST',
+			url:'https://api.particle.io/v1/devices/'+particleid+'/threshhold',
+			data:{
+				access_token: _access_token,
+				args: ui.value 
+			},
+			success:function(data){
+				//str = JSON.stringify(data);
+				str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+				console.log(str); // Logs output to dev tools console.
+				$('#console').prepend($.now()+'<br>'+str+'<hr>');
+			},
+			fail:function(data){
+				str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+				console.log(str); // Logs output to dev tools console.
+				$('#console').prepend($.now()+'<br>FAILED<br>'+str+'<hr>');
+			}
+		});
+	  }
+    });
+	
+	var handle1 = $( "#custom-handle1" );
+    $( "#slider1" ).slider({
+      create: function() {
+        handle1.text( $( this ).slider( "value" ) );
+      },
+      slide: function( event, ui ) {
+        handle1.text( ui.value );
+      },
+	  stop: function( event, ui ) {
+		console.log(ui.value);
+		$.ajax({
+			method:'POST',
+			url:'https://api.particle.io/v1/devices/'+particleid+'/timelimit',
+			data:{
+				access_token: _access_token,
+				args: ui.value 
+			},
+			success:function(data){
+				//str = JSON.stringify(data);
+				str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+				console.log(str); // Logs output to dev tools console.
+				$('#console').prepend($.now()+'<br>'+str+'<hr>');
+			},
+			fail:function(data){
+				str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+				console.log(str); // Logs output to dev tools console.
+				$('#console').prepend($.now()+'<br>FAILED<br>'+str+'<hr>');
+			}
+		});
+	  }
+    });
+	
+	var handle2 = $( "#custom-handle2" );
+    $( "#slider2" ).slider({
+      create: function() {
+        handle2.text( $( this ).slider( "value" ) );
+      },
+      slide: function( event, ui ) {
+        handle2.text( ui.value );
+      },
+	  stop: function( event, ui ) {
+		console.log(ui.value);
+		$.ajax({
+			method:'POST',
+			url:'https://api.particle.io/v1/devices/'+particleid+'/timelatency',
+			data:{
+				access_token: _access_token,
+				args: ui.value 
+			},
+			success:function(data){
+				//str = JSON.stringify(data);
+				str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+				console.log(str); // Logs output to dev tools console.
+				$('#console').prepend($.now()+'<br>'+str+'<hr>');
+			},
+			fail:function(data){
+				str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+				console.log(str); // Logs output to dev tools console.
+				$('#console').prepend($.now()+'<br>FAILED<br>'+str+'<hr>');
+			}
+		});
+	  }
+    });
+	$.ajax({
+		method:'GET',
+		url:'https://api.particle.io/v1/devices/'+particleid+'/vthreshhold',
+		data:{
+			access_token: _access_token
+		},
+		success:function(data){
+			$( "#slider" ).slider( "option", "value", data.result);
+			handle.text( data.result );
+		},
+		fail:function(data){
+			str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+			console.log(str); // Logs output to dev tools console.
+			$('#console').prepend($.now()+'<br>FAILED<br>'+str+'<hr>');
+		}
+	}).always(function (jqXHR) {
+		if(jqXHR.status==408)$('#console').prepend($.now()+'<br>FAILED<br>device offline<hr>');
+	});
+	$.ajax({
+		method:'GET',
+		url:'https://api.particle.io/v1/devices/'+particleid+'/vtimelimit',
+		data:{
+			access_token: _access_token
+		},
+		success:function(data){
+			$( "#slider1" ).slider( "option", "value", data.result);
+			handle1.text( data.result );
+		},
+		fail:function(data){
+			str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+			console.log(str); // Logs output to dev tools console.
+			$('#console').prepend($.now()+'<br>FAILED<br>'+str+'<hr>');
+		}
+	}).always(function (jqXHR) {
+		if(jqXHR.status==408)$('#console').prepend($.now()+'<br>FAILED<br>device offline<hr>');
+	});
+	$.ajax({
+		method:'GET',
+		url:'https://api.particle.io/v1/devices/'+particleid+'/vtimelatency',
+		data:{
+			access_token: _access_token
+		},
+		success:function(data){
+			$( "#slider2" ).slider( "option", "value", data.result);
+			handle2.text( data.result );
+		},
+		fail:function(data){
+			str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+			console.log(str); // Logs output to dev tools console.
+			$('#console').prepend($.now()+'<br>FAILED<br>'+str+'<hr>');
+		}
+	}).always(function (jqXHR) {
+		if(jqXHR.status==408)$('#console').prepend($.now()+'<br>FAILED<br>device offline<hr>');
+	});
+	$('#batt_status').parent().click(
+		function(){
+			var _ele=$('#batt_status');
+			$.ajax({
+				method:'GET',
+				url:'https://api.particle.io/v1/devices/'+particleid+'/vsoc',
+				data:{
+					access_token: _access_token
+				},
+				success:function(data){
+					_ele.append( data.result+"<br>" );
+				},
+				fail:function(data){
+					str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+					console.log(str); // Logs output to dev tools console.
+					$('#console').prepend($.now()+'<br>FAILED<br>'+str+'<hr>');
+				}
+			}).always(function (jqXHR) {
+				if(jqXHR.status==408)$('#console').prepend($.now()+'<br>FAILED<br>device offline<hr>');
+			});
+			
+		}
+	);
+	$('#download').click(
+		function(){
+			if($('#dl_mapping').prop("checked")){
+				$.ajax({
+					method:'POST',
+					url:'downloader.php',
+					data:{
+						von: $('#dl_von').val(),
+						bis: $('#dl_bis').val()					
+					},
+					success:function(data){
+						console.log(data);
+					},
+					fail:function(data){
+						str = JSON.stringify(data, null, 4); // (Optional) beautiful indented output.
+						console.log(str); // Logs output to dev tools console.
+						$('#console').prepend($.now()+'<br>FAILED<br>'+str+'<hr>');
+					}
+				});
+			}else{
+				document.location.href="downloader.php?von="+$('#dl_von').val()+"&bis="+$('#dl_bis').val()+"&snapping="+$('#dl_snapping').prop("checked");
+			}
+			
+			/**/
+		}
+	);
+  } );
+  </script>
+</head>
+<body>
+<div class="cont">
+	<h3>Trackbee <span id="batt_status"></span></h3>
+	<h4>Threshhold</h4>
+	<div id="slider">
+		<div id="custom-handle" class="ui-slider-handle"></div>
+	</div>
+	<h4>Timelimit</h4>
+	<div id="slider1">
+		<div id="custom-handle1" class="ui-slider-handle"></div>
+	</div>
+	<h4>Timelatency</h4>
+	<div id="slider2">
+		<div id="custom-handle2" class="ui-slider-handle"></div>
+	</div>
+	<hr>
+	<h4>Download</h4>
+	von:&nbsp;<input type="text" placeholder="DD.MM.YYYY hh:mm:ss" name="von" id="dl_von" /><br>
+	bis:&nbsp;<input type="text" placeholder="DD.MM.YYYY hh:mm:ss" name="bis" id="dl_bis" /><br>
+	<input type="checkbox" value="1" name="snapping" id="dl_snapping" />&nbsp;Google Roads API point snapping<br>
+	<input type="checkbox" value="1" name="mapping" id="dl_mapping" />&nbsp;display Google Map<br>
+	<input type="button" id="download" value="Send" />	
+	
+	<br><br>	
+	<div id="console"></div>
+</div>
+ 
+ 
+</body>
+</html>
