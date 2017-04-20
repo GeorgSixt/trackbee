@@ -29,6 +29,38 @@ var source = new EventSource(url);
 			
 			for (var i=0; i < dataset.length; i++) {
 				var ds=dataset[i];
+				if(ds.length==15){
+					var obj = {
+						device_id: data.coreid,
+						event: particle_event,
+						published_at: data.published_at,
+						s0 : ds[0],
+						s1 : ds[1],
+						s2 : ds[2],
+						s3 : ds[3],
+						s4 : ds[4],
+						s5 : ds[5],
+						lat :ds[6],
+						lon :ds[7],
+						speed:ds[8],
+						angle:ds[9],
+						satellites : ds[10],
+						hdop : ds[11],
+						max_z_g : ds[12],
+						time : ds[13],
+						rms : ds[14]
+					}
+					
+					datastore.insert({
+						key: key,
+						data: obj
+					}, function(err) {
+						if(err) {
+							console.log('There was an error storing the event', err);
+						}
+						console.log('stored in datastore', obj);
+					});
+				}
 				if(ds.length==14){
 					var obj = {
 						device_id: data.coreid,

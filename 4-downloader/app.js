@@ -63,7 +63,7 @@ app.get('/', function(req, res){
 				csv =csv + '\r\n';
 				*/
 				
-				csv = csv + data.s0 + ',' + data.s1 + ',' + data.s2 + ',' + data.s3 + ',' + data.s4 + ',' + data.s5 + ',' + data.lat  + ',' + data.lon  + ',' + (parseFloat(data.speed)*1.852)  + ',' + data.angle  + ',' + data.satellites + ',' + data.hdop + ',' + data.max_z_g + ',' + data.time + ',' + data.published_at + '\r\n';
+				csv = csv + data.s0 + ',' + data.s1 + ',' + data.s2 + ',' + data.s3 + ',' + data.s4 + ',' + data.s5 + ',' + data.lat  + ',' + data.lon  + ',' + (parseFloat(data.speed)*1.852)  + ',' + data.angle  + ',' + data.satellites + ',' + data.hdop + ',' + data.max_z_g + ',' + data.rms + ',' + data.time + ',' + data.published_at + '\r\n';
 				
 			}
 		});
